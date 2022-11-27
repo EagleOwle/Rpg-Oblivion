@@ -4,10 +4,15 @@ using UnityEngine;
 
 public interface IWeapon
 {
-    void Attack();
+    abstract void  Attack();
 }
 
-public class Sword : MonoBehaviour, IWeapon
+public abstract class Weapon : MonoBehaviour, IWeapon
+{
+    public abstract void Attack();
+}
+
+public class Sword : Weapon
 {
     [SerializeField] private Animator animator;
 
@@ -21,7 +26,7 @@ public class Sword : MonoBehaviour, IWeapon
         }
     }
 
-    public void Attack()
+    public override void Attack()
     {
         animator.SetTrigger(attack);
     }

@@ -25,6 +25,7 @@ public class Motion : MonoBehaviour
     {
         while(transform.position != moveDirection)
         {
+            yield return WaitForFixedUpdate;
             if (groundCheck.CheckGroundStatus())
             {
                 Vector3 direction = moveDirection;
@@ -32,8 +33,6 @@ public class Motion : MonoBehaviour
 
                 rigidbody.velocity = transform.TransformDirection(direction * speedMove * Time.deltaTime);
             }
-
-            yield return WaitForFixedUpdate;
         }
     }
 
