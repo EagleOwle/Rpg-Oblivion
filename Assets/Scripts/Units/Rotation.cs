@@ -12,6 +12,9 @@ public class Rotation : MonoBehaviour
     public void Initialise()
     {
         WaitForEndOfFrame = new WaitForEndOfFrame();
+        rigidbody.constraints = RigidbodyConstraints.FreezeRotationX |
+                                RigidbodyConstraints.FreezeRotationY |
+                                RigidbodyConstraints.FreezeRotationZ;
     }
 
     public void StartRotation(Vector3 value)
@@ -23,13 +26,20 @@ public class Rotation : MonoBehaviour
 
     private IEnumerator OnRotation()
     {
-        while (Mathf.RoundToInt(transform.eulerAngles.y) != Mathf.RoundToInt(rotateDirection.y))
+        while (Round(transform.eulerAngles.y) != Round(rotateDirection.y))
         {
             transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, rotateDirection, speedRotation * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
 
             yield return WaitForEndOfFrame;
         }
+    }
+
+    private float Round(float value)
+    {
+        value = (float)System.Math.Round(value, 2);
+
+        return value;
     }
 
 }

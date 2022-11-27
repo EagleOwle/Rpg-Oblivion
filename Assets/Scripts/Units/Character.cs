@@ -10,6 +10,7 @@ public class Character : MonoBehaviour, IGroundCheck
     [SerializeField] private Motion motion;
     [SerializeField] private Rotation rotation;
     [SerializeField] private Jumping jumping;
+    [SerializeField] private Crouching crouching;
 
     private void Start()
     {
@@ -17,6 +18,8 @@ public class Character : MonoBehaviour, IGroundCheck
         jumping.Initialise(this as IGroundCheck);
         rotation.Initialise();
 
+        CrouchListener[] crouchListeners = GetComponentsInChildren<CrouchListener>();
+        crouching.Initialise(this as IGroundCheck, crouchListeners);
     }
 
     public void OnJump()
@@ -26,7 +29,7 @@ public class Character : MonoBehaviour, IGroundCheck
 
     public void OnCrouch(bool crouch)
     {
-        motion.OnCrouch(crouch);
+        crouching.OnCrouch(crouch);
     }
 
     public void OnAcceleration(bool acceleration)

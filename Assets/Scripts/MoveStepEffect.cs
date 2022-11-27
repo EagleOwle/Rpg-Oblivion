@@ -33,7 +33,7 @@ public class MoveStepEffect : MonoBehaviour
 
         if (jiggleRight)
         {
-            x = defaultPositionX + Mathf.PingPong(Time.time * speed, amplitude) - amplitude / 2f;
+            x = defaultPositionX + Mathf.PingPong(Time.time * speed, amplitude) - (-amplitude);
         }
 
         transform.localPosition = new Vector3(x, y, transform.localPosition.z);

@@ -6,15 +6,9 @@ public class Motion : MonoBehaviour
     [SerializeField] private new Rigidbody rigidbody;
     [SerializeField] private float speedMove = 400;
 
-    private bool crouch;
     private bool acceleration;
     private WaitForFixedUpdate WaitForFixedUpdate;
-    private IGroundCheck groundCheck;
-
-    public void OnCrouch(bool crouch)
-    {
-        this.crouch = crouch;
-    }
+    private IGroundCheck groundCheck;   
 
     public void OnAcceleration(bool acceleration)
     {
