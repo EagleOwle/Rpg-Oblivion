@@ -1,28 +1,35 @@
+using System.Collections;
 using UnityEngine;
 
 public class Rotation : MonoBehaviour
 {
 	[SerializeField] private new Rigidbody rigidbody;
+    [SerializeField] private float speedRotation = 150;
 
-	[SerializeField] private float speedRotation = 400;
-	private Vector3 rotateDirection;
+    private WaitForEndOfFrame WaitForEndOfFrame;
+    private Vector3 rotateDirection;
 
-	private Vector3 rotation;
+    public void Initialise()
+    {
+        WaitForEndOfFrame = new WaitForEndOfFrame();
+    }
 
-	public void Rotate(Vector3 value)
+    public void StartRotation(Vector3 value)
 	{
-		if (value.magnitude > 1f) value.Normalize();
-		rotateDirection = new Vector3(value.y, value.x, value.z);
+		StopAllCoroutines();
+        rotateDirection = transform.eulerAngles + (new Vector3(value.y, value.x, value.z) * speedRotation);
+        StartCoroutine(OnRotation());
 	}
 
-	private void Update()
-	{
-		OnRotation();
-	}
+    private IEnumerator OnRotation()
+    {
+        while (Mathf.RoundToInt(transform.eulerAngles.y) != Mathf.RoundToInt(rotateDirection.y))
+        {
+            transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, rotateDirection, speedRotation * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
 
-	private void OnRotation()
-	{
-		rotation += rotateDirection * speedRotation * Time.deltaTime;
-		transform.rotation = Quaternion.Euler(0, rotation.y, 0);
-	}
+            yield return WaitForEndOfFrame;
+        }
+    }
+
 }

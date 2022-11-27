@@ -1,45 +1,52 @@
+using System.Collections;
 using UnityEngine;
 
 public class Motion : MonoBehaviour
 {
-	[SerializeField] private new Rigidbody rigidbody;
-	[SerializeField] private float speedMove = 400;
-	private bool crouching;
-	private bool acceleration;
-	private Vector3 moveDirection;
+    [SerializeField] private new Rigidbody rigidbody;
+    [SerializeField] private float speedMove = 400;
 
-	private IGroundCheck groundCheck;
+    private bool crouch;
+    private bool acceleration;
+    private WaitForFixedUpdate WaitForFixedUpdate;
+    private IGroundCheck groundCheck;
 
-	public void Initialise(IGroundCheck groundCheck)
+    public void OnCrouch(bool crouch)
     {
-		this.groundCheck = groundCheck;
-	}
+        this.crouch = crouch;
+    }
 
-	private void FixedUpdate()
-	{
-		Moving();
-	}
+    public void OnAcceleration(bool acceleration)
+    {
+        this.acceleration = acceleration;
+    }
 
-	public void Move(Vector2 move)
-	{
-		if (move.magnitude > 1f) move.Normalize();
-		moveDirection = new Vector3(move.x, 0, move.y);
-	}
+    public void StartMove(Vector3 moveDirection)
+    {
+        StopAllCoroutines();
+        StartCoroutine(Moving(moveDirection));
+    }
 
-	public void Move(Vector2 move, bool crouch, bool jump, bool acceleration)
-	{
-		if (move.magnitude > 1f) move.Normalize();
-		moveDirection = new Vector3(move.x, 0, move.y);
-		this.acceleration = acceleration;
-	}
+    private IEnumerator Moving(Vector3 moveDirection)
+    {
+        while(transform.position != moveDirection)
+        {
+            if (groundCheck.CheckGroundStatus())
+            {
+                Vector3 direction = moveDirection;
+                if (acceleration) direction *= 2;
 
-	private void Moving()
-	{
-		Vector3 direction = moveDirection;
-		if (acceleration) direction *= 2;
-		if (groundCheck.CheckGroundStatus() && Time.deltaTime > 0)
-		{
-			rigidbody.velocity = transform.TransformDirection(direction * speedMove * Time.deltaTime);
-		}
-	}
+                rigidbody.velocity = transform.TransformDirection(direction * speedMove * Time.deltaTime);
+            }
+
+            yield return WaitForFixedUpdate;
+        }
+    }
+
+    public void Initialise(IGroundCheck groundCheck)
+    {
+        this.groundCheck = groundCheck;
+        WaitForFixedUpdate = new WaitForFixedUpdate();
+    }
+
 }

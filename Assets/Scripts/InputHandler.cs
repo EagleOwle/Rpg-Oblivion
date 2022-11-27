@@ -56,7 +56,7 @@ public class InputHandler : MonoBehaviour, IMouseInput
             if (scroll != value)
             {
                 scroll = value;
-                EventOnMouseScroll.Invoke(scroll);
+                EventOnMouseScroll?.Invoke(scroll);
             }
 
         }

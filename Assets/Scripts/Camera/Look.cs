@@ -52,5 +52,4 @@ public class Look : MonoBehaviour
         }
         return Mathf.Clamp(angle, min, max);
     }
-
 }

@@ -22,30 +22,37 @@ public class PlayerControl : MonoBehaviour
     private void IMouseInput_EventOnMouseAxis(Vector2 value)
     {
         rotate = value;
-        character.SetMotion(move, rotate, jump, crouch, acceleration);
+        character.Rotation(value);
     }
 
     private void IMouseInput_EventOnAcceleration(bool value)
     {
         acceleration = value;
-        character.SetMotion(move, rotate, jump, crouch, acceleration);
+        character.OnAcceleration(value);
     }
 
     private void IMouseInput_EventOnCrouch(bool value)
     {
         crouch = value;
+        character.OnCrouch(value);
     }
 
     private void IMouseInput_EventOnJump()
     {
         jump = true;
-        character.SetMotion(move, rotate, jump, crouch, acceleration);
+        character.OnJump();
+        Invoke(nameof(DebugClearJump), 0.1f);
     }
 
     private void IMouseInput_EventOnKeyboardAxis(Vector2 value)
     {
         move = value;
-        character.SetMotion(move, rotate, jump, crouch, acceleration);
+        character.Move(value);
+    }
+
+    private void DebugClearJump()
+    {
+        jump = false;
     }
 
 }
