@@ -9,9 +9,9 @@ public class SmoothFollow : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (!target) return;
+        if (!target) return;
 
-		transform.position = Vector3.Lerp(transform.position, target.position, damping * Time.deltaTime);
-		transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, damping * Time.deltaTime);
-	}
+        transform.position = Vector3.Lerp(transform.position, target.position, damping * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, damping * Time.deltaTime);
+    }
 }

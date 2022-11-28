@@ -26,7 +26,7 @@ public class Look : MonoBehaviour
 
     private void Update()
     {
-        if (onlyHideCursor && Cursor.visible == false) return;
+        if (onlyHideCursor && Cursor.visible == true) return;
 
         //rotation = Vector3.Lerp(rotation, rotation + inputValue, speedRotation * Time.deltaTime);
         rotation += inputValue * speedRotation * Time.deltaTime;

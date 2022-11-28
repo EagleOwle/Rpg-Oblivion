@@ -2,33 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IWeapon
+public class Weapon : MonoBehaviour
 {
-    abstract void  Attack();
-}
-
-public abstract class Weapon : MonoBehaviour, IWeapon
-{
-    public abstract void Attack();
-}
-
-public class Sword : Weapon
-{
+    [SerializeField] private bool onlyHideCursor = true;
     [SerializeField] private Animator animator;
 
     private const string attack = "Attack";
 
     private void Update()
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Attack();
         }
     }
 
-    public override void Attack()
+    public void Attack()
     {
         animator.SetTrigger(attack);
     }
-
 }
+

@@ -28,9 +28,9 @@ public class Jumping : MonoBehaviour
 
     private bool ObstacleFromAbove()
     {
-        Ray crouchRay = new Ray(transform.position + Vector3.up * capsule.radius * 0.5f, Vector3.up);
-        float crouchRayLength = capsuleHeight - capsule.radius * 0.5f;
-        if (Physics.SphereCast(crouchRay, capsule.radius * 0.5f, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        Ray ray = new Ray(transform.position + Vector3.up * capsule.radius * 0.5f, Vector3.up);
+        float length = capsuleHeight - capsule.radius * 0.5f;
+        if (Physics.SphereCast(ray, capsule.radius * 0.5f, length, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             return true;
         }

@@ -4,8 +4,11 @@ using UnityEngine.Events;
 
 public class Character : MonoBehaviour, IGroundCheck
 {
-	[SerializeField] private float groundCheckDistance = 0.1f;
+	[SerializeField] private float groundCheckDistance = 0.15f;
 	[SerializeField] private bool debugIsGrounded;
+
+    [SerializeField] private CapsuleCollider capsule;
+    [SerializeField] private new CharacterController characterController;
 
     [SerializeField] private Motion motion;
     [SerializeField] private Rotation rotation;
@@ -49,6 +52,28 @@ public class Character : MonoBehaviour, IGroundCheck
     }
 
     bool IGroundCheck.CheckGroundStatus()
+    {
+        return CapsuleObstacleFromBelow();
+    }
+
+    private bool CapsuleObstacleFromBelow()
+    {
+        float radius = characterController.radius;
+        Ray ray = new Ray(transform.position + Vector3.up, Vector3.down);
+
+        if (Physics.SphereCast(ray, radius, groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        {
+            debugIsGrounded = true;
+            return true;
+        }
+        else
+        {
+            debugIsGrounded = false;
+            return false;
+        }
+    }
+
+    bool LineObstacleFromBelow()
     {
 		RaycastHit hitInfo;
 #if UNITY_EDITOR

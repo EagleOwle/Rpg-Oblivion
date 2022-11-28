@@ -5,58 +5,65 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
+	[SerializeField] private bool onlyHideCursor = true;
+
+	[SerializeField] private Animator animator;
+	[SerializeField] private SmoothFollow smoothFollow;
+
 	[SerializeField] private Weapon sword;
 	[SerializeField] private Weapon staff;
 	[SerializeField] private Weapon axe;
 
-	[SerializeField] private float damping = 2.0f;
-	[SerializeField] private Transform showPosition;
-    [SerializeField] private Transform hidePosition;
 
 	private int currentWeaponIndex;
 
     private void Start()
     {
-		sword.gameObject.SetActive(false);
+		//sword.gameObject.SetActive(false);
 		staff.gameObject.SetActive(false);
 		axe.gameObject.SetActive(false);
-		OnChangeWeapon(3);
 	}
 
     public void OnChangeWeapon(int weaponIndex)
     {
-		StopAllCoroutines();
 		currentWeaponIndex = weaponIndex;
-		StartCoroutine(Hide());
+		smoothFollow.enabled = false;
+		animator.SetTrigger("Hide");
     }
 
-	//private IEnumerator Show()
-	//{
-	//	while (true)
-	//	{
-	//		transform.position = Vector3.Lerp(transform.position, showPosition.position, damping * Time.deltaTime);
-	//		transform.rotation = Quaternion.Lerp(transform.rotation, showPosition.rotation, damping * Time.deltaTime);
-	//		yield return null;
-	//	}
-	//}
 
-	private IEnumerator Hide()
+    private void Update()
     {
-		while((transform.eulerAngles.y != hidePosition.eulerAngles.y))
-        {
-			transform.position = Vector3.Lerp(transform.position, hidePosition.position, damping * Time.deltaTime);
-			transform.rotation = Quaternion.Lerp(transform.rotation, hidePosition.rotation, damping * Time.deltaTime);
-			yield return null;
-        }
+		if (onlyHideCursor && Cursor.visible == true) return;
 
-		Debug.Log("OnPosition");
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+			OnChangeWeapon(1);
+
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			OnChangeWeapon(2);
+
+		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			OnChangeWeapon(3);
+
+		}
+	}
+
+
+    private void EndHide()
+    {
 		ChangeWeapon();
 	}
 
 	private void ChangeWeapon()
     {
-		
-        switch (currentWeaponIndex)
+		switch (currentWeaponIndex)
         {
 			case(1):
 				sword.gameObject.SetActive(true);
@@ -75,7 +82,9 @@ public class WeaponHolder : MonoBehaviour
 				break;
         }
 
-		//StartCoroutine(Show());
+		smoothFollow.enabled = true;
 	}
+
+	
 
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Motion : MonoBehaviour
 {
     [SerializeField] private new Rigidbody rigidbody;
+    [SerializeField] private new CharacterController characterController;
     [SerializeField] private float speedMove = 400;
 
     private bool acceleration;
@@ -20,6 +21,10 @@ public class Motion : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(Moving(moveDirection));
     }
+    private void FixedUpdate()
+    {
+        characterController.SimpleMove(Vector3.zero);
+    }
 
     private IEnumerator Moving(Vector3 moveDirection)
     {
@@ -31,7 +36,7 @@ public class Motion : MonoBehaviour
                 Vector3 direction = moveDirection;
                 if (acceleration) direction *= 2;
 
-                rigidbody.velocity = transform.TransformDirection(direction * speedMove * Time.deltaTime);
+                characterController.SimpleMove(transform.TransformDirection(direction * speedMove * Time.deltaTime));
             }
         }
     }

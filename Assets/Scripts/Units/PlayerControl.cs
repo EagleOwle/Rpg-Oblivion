@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private Character character;
-
+    [SerializeField] private bool onlyHideCursor = true;
     private Vector3 move;
     private Vector3 rotate;
     private bool acceleration;
@@ -21,24 +21,32 @@ public class PlayerControl : MonoBehaviour
 
     private void IMouseInput_EventOnMouseAxis(Vector2 value)
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         rotate = value;
         character.Rotation(value);
     }
 
     private void IMouseInput_EventOnAcceleration(bool value)
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         acceleration = value;
         character.OnAcceleration(value);
     }
 
     private void IMouseInput_EventOnCrouch(bool value)
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         crouch = value;
         character.OnCrouch(value);
     }
 
     private void IMouseInput_EventOnJump()
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         jump = true;
         character.OnJump();
         Invoke(nameof(DebugClearJump), 0.1f);
@@ -46,12 +54,16 @@ public class PlayerControl : MonoBehaviour
 
     private void IMouseInput_EventOnKeyboardAxis(Vector2 value)
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         move = value;
         character.Move(value);
     }
 
     private void DebugClearJump()
     {
+        if (onlyHideCursor && Cursor.visible == true) return;
+
         jump = false;
     }
 
