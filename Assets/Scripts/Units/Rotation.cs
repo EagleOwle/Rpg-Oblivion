@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Rotation : MonoBehaviour
 {
-	[SerializeField] private new Rigidbody rigidbody;
-    [SerializeField] private float speedRotation = 150;
+	 [SerializeField] private float speedRotation = 150;
 
     private WaitForEndOfFrame WaitForEndOfFrame;
     private Vector3 rotateDirection;
@@ -12,9 +11,6 @@ public class Rotation : MonoBehaviour
     public void Initialise()
     {
         WaitForEndOfFrame = new WaitForEndOfFrame();
-        rigidbody.constraints = RigidbodyConstraints.FreezeRotationX |
-                                RigidbodyConstraints.FreezeRotationY |
-                                RigidbodyConstraints.FreezeRotationZ;
     }
 
     public void StartRotation(Vector3 value)

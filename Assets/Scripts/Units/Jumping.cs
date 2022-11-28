@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Jumping : MonoBehaviour
 {
-    [SerializeField] private CapsuleCollider capsule;
-    [SerializeField] private new Rigidbody rigidbody;
-    [SerializeField] private float jumpPower = 5;
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private float jumpTime = 20;
+    [SerializeField] private float jumpPower = 20;
+    [SerializeField] private AnimationCurve jumpCurve;
     private IGroundCheck groundCheck;
     private float capsuleHeight;
     private Vector3 capsuleCenter;
@@ -14,23 +15,37 @@ public class Jumping : MonoBehaviour
     public void Initialise(IGroundCheck groundCheck)
     {
         this.groundCheck = groundCheck;
-        capsuleHeight = capsule.height;
-        capsuleCenter = capsule.center;
+        capsuleHeight = characterController.height;
+        capsuleCenter = characterController.center;
     }
 
+    float verticalVelocity;
     public void Jump()
     {
         if (groundCheck.CheckGroundStatus() == true && ObstacleFromAbove() == false)
         {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpPower, rigidbody.velocity.z);
+            StartCoroutine(JumpRoutine());
+        }
+    }
+
+    float jumpTimer;
+    private IEnumerator JumpRoutine()
+    {
+        jumpTimer = 0;
+        while (jumpTimer < jumpCurve.length)
+        {
+            yield return null;
+            characterController.Move(new Vector3(0, jumpCurve.Evaluate(jumpTimer) * jumpPower, 0));
+            jumpTimer += jumpTime * Time.deltaTime;
         }
     }
 
     private bool ObstacleFromAbove()
     {
-        Ray ray = new Ray(transform.position + Vector3.up * capsule.radius * 0.5f, Vector3.up);
-        float length = capsuleHeight - capsule.radius * 0.5f;
-        if (Physics.SphereCast(ray, capsule.radius * 0.5f, length, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        float radius = characterController.radius;
+        Ray ray = new Ray(transform.position + Vector3.up * radius * 0.5f, Vector3.up);
+        float length = capsuleHeight - radius * 0.5f;
+        if (Physics.SphereCast(ray, radius * 0.5f, length, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             return true;
         }

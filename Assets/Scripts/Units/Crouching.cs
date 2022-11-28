@@ -6,7 +6,7 @@ using UnityEngine;
 public class Crouching : MonoBehaviour
 {
     public event Action<bool> eventOnCrouch;
-    [SerializeField] private CapsuleCollider capsule;
+    [SerializeField] private CharacterController characterController;
     private IGroundCheck groundCheck;
     private float capsuleHeight;
     private Vector3 capsuleCenter;
@@ -14,8 +14,8 @@ public class Crouching : MonoBehaviour
     public void Initialise(IGroundCheck groundCheck, CrouchListener[] crouchListeners)
     {
         this.groundCheck = groundCheck;
-        capsuleHeight = capsule.height;
-        capsuleCenter = capsule.center;
+        capsuleHeight = characterController.height;
+        capsuleCenter = characterController.center;
 
         foreach (var item in crouchListeners)
         {
@@ -36,8 +36,8 @@ public class Crouching : MonoBehaviour
             if (groundCheck.CheckGroundStatus() == false) return;
 
             StopAllCoroutines();
-            capsule.height = capsule.height / 2f;
-            capsule.center = capsule.center / 2f;
+            characterController.height = characterController.height / 2f;
+            characterController.center = characterController.center / 2f;
             eventOnCrouch.Invoke(true);
         }
         else
@@ -53,16 +53,17 @@ public class Crouching : MonoBehaviour
             yield return null;
         }
 
-        capsule.height = capsuleHeight;
-        capsule.center = capsuleCenter;
+        characterController.height = capsuleHeight;
+        characterController.center = capsuleCenter;
         eventOnCrouch.Invoke(false);
     }
 
     private bool ObstacleFromAbove()
     {
-        Ray crouchRay = new Ray(transform.position + Vector3.up * capsule.radius * 0.5f, Vector3.up);
-        float crouchRayLength = capsuleHeight - capsule.radius * 0.5f;
-        if (Physics.SphereCast(crouchRay, capsule.radius * 0.5f, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        float radius = characterController.radius;
+        Ray crouchRay = new Ray(transform.position + Vector3.up * radius * 0.5f, Vector3.up);
+        float crouchRayLength = capsuleHeight - radius * 0.5f;
+        if (Physics.SphereCast(crouchRay, radius * 0.5f, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             return true;
         }

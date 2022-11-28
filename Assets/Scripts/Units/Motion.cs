@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Motion : MonoBehaviour
 {
-    [SerializeField] private new Rigidbody rigidbody;
-    [SerializeField] private new CharacterController characterController;
+    [SerializeField] private UnitSfxManager sfxManager;
+    [SerializeField] private CharacterController characterController;
     [SerializeField] private float speedMove = 400;
 
     private bool acceleration;
@@ -21,14 +22,11 @@ public class Motion : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(Moving(moveDirection));
     }
-    private void FixedUpdate()
-    {
-        characterController.SimpleMove(Vector3.zero);
-    }
 
     private IEnumerator Moving(Vector3 moveDirection)
     {
-        while(transform.position != moveDirection)
+        sfxManager.PlayStep();
+        while (Vector3.Distance(transform.position, transform.position + moveDirection) > 0.5f)
         {
             yield return WaitForFixedUpdate;
             if (groundCheck.CheckGroundStatus())
@@ -38,7 +36,20 @@ public class Motion : MonoBehaviour
 
                 characterController.SimpleMove(transform.TransformDirection(direction * speedMove * Time.deltaTime));
             }
+
+            //yield return new WaitForSeconds(0.5f);
+            //audioSource.PlayOneShot(stepClip);
+
         }
+
+        sfxManager.StopPlayStep();
+    }
+
+    private float Round(float value)
+    {
+        value = (float)System.Math.Round(value, 2);
+
+        return value;
     }
 
     public void Initialise(IGroundCheck groundCheck)

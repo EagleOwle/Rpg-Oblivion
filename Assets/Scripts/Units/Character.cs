@@ -7,8 +7,7 @@ public class Character : MonoBehaviour, IGroundCheck
 	[SerializeField] private float groundCheckDistance = 0.15f;
 	[SerializeField] private bool debugIsGrounded;
 
-    [SerializeField] private CapsuleCollider capsule;
-    [SerializeField] private new CharacterController characterController;
+    [SerializeField] private CharacterController characterController;
 
     [SerializeField] private Motion motion;
     [SerializeField] private Rotation rotation;
@@ -96,4 +95,5 @@ public class Character : MonoBehaviour, IGroundCheck
 
     [System.Serializable]
     public class EventVector3 : UnityEvent<Vector3> { };
+
 }
