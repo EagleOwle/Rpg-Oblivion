@@ -5,12 +5,13 @@ using UnityEngine;
 public class Jumping : MonoBehaviour
 {
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float jumpTime = 20;
-    [SerializeField] private float jumpPower = 20;
+   
+    [SerializeField] private float jumpPower = 0.5f;
     [SerializeField] private AnimationCurve jumpCurve;
     private IGroundCheck groundCheck;
     private float capsuleHeight;
     private Vector3 capsuleCenter;
+    private const float jumpTime = 30;
 
     public void Initialise(IGroundCheck groundCheck)
     {
@@ -19,7 +20,6 @@ public class Jumping : MonoBehaviour
         capsuleCenter = characterController.center;
     }
 
-    float verticalVelocity;
     public void Jump()
     {
         if (groundCheck.CheckGroundStatus() == true && ObstacleFromAbove() == false)
@@ -28,15 +28,14 @@ public class Jumping : MonoBehaviour
         }
     }
 
-    float jumpTimer;
     private IEnumerator JumpRoutine()
     {
-        jumpTimer = 0;
-        while (jumpTimer < jumpCurve.length)
+        float currentTime = 0;
+        while (currentTime < jumpCurve.length)
         {
+            currentTime += jumpTime * Time.deltaTime;
+            characterController.Move(new Vector3(0, jumpCurve.Evaluate(currentTime) * jumpPower, 0));
             yield return null;
-            characterController.Move(new Vector3(0, jumpCurve.Evaluate(jumpTimer) * jumpPower, 0));
-            jumpTimer += jumpTime * Time.deltaTime;
         }
     }
 
@@ -54,4 +53,6 @@ public class Jumping : MonoBehaviour
             return false;
         }
     }
+
+
 }
