@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private bool onlyHideCursor = true;
-    [SerializeField] private Animator animator;
+    [SerializeField] protected bool onlyHideCursor = true;
+    [SerializeField] protected Animator animator;
 
-    private const string attack = "Attack";
+    protected const string attack = "Attack";
 
-    private void Update()
+    protected virtual void Update()
     {
         if (onlyHideCursor && Cursor.visible == true) return;
 
@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         animator.SetTrigger(attack);
     }

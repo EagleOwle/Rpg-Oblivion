@@ -6,12 +6,15 @@ using TMPro;
 
 public class UIGameMenuManager : MonoBehaviour
 {
+    [SerializeField] private UIPausePanel pausePanel;
+    [SerializeField] private Hud hud;
+    [SerializeField] private TextMeshProUGUI supportText;
+
+    #region Old
     //[SerializeField] private GamePreference setting;
     //[SerializeField] private UIGameTopPanel topPanel;
     //[SerializeField] private UIGameButtomPanel buttomPanel;
-    [SerializeField] private UIPausePanel pausePanel;
     //[SerializeField] private UIMessagePanel messagePanel;
-    [SerializeField] private TextMeshProUGUI supportText;
 
     //public void Initialise(IPlayerGetData playerData, IGlobalMessage globalMessage)
     //{
@@ -20,11 +23,14 @@ public class UIGameMenuManager : MonoBehaviour
     //    pauseButton.onClick.AddListener(OnButtonPause);
     //    pausePanel.Initialise(setting);
     //}
+    #endregion
 
     private void Start()
     {
         pausePanel.Initialise();
         pausePanel.eventHide += PausePanel_eventHide;
+
+        hud.Initialise();
     }
 
     private void PausePanel_eventHide(Menu obj)

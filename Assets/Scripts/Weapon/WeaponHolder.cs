@@ -10,9 +10,9 @@ public class WeaponHolder : MonoBehaviour
 	[SerializeField] private Animator animator;
 	[SerializeField] private SmoothFollow smoothFollow;
 
-	[SerializeField] private Weapon sword;
-	[SerializeField] private Weapon staff;
-	[SerializeField] private Weapon axe;
+	//[SerializeField] private Weapon sword;
+	//[SerializeField] private Weapon staff;
+	//[SerializeField] private Weapon axe;
 
 
 	private int currentWeaponIndex;
@@ -20,8 +20,8 @@ public class WeaponHolder : MonoBehaviour
     private void Start()
     {
 		//sword.gameObject.SetActive(false);
-		staff.gameObject.SetActive(false);
-		axe.gameObject.SetActive(false);
+		//staff.gameObject.SetActive(false);
+		//axe.gameObject.SetActive(false);
 	}
 
     public void OnChangeWeapon(int weaponIndex)
@@ -66,19 +66,19 @@ public class WeaponHolder : MonoBehaviour
 		switch (currentWeaponIndex)
         {
 			case(1):
-				sword.gameObject.SetActive(true);
-				staff.gameObject.SetActive(false);
-				axe.gameObject.SetActive(false);
+				//sword.gameObject.SetActive(true);
+				//staff.gameObject.SetActive(false);
+				//axe.gameObject.SetActive(false);
 				break;
 			case(2):
-				sword.gameObject.SetActive(false);
-				staff.gameObject.SetActive(true);
-				axe.gameObject.SetActive(false);
+				//sword.gameObject.SetActive(false);
+				//staff.gameObject.SetActive(true);
+				//axe.gameObject.SetActive(false);
 				break;
 			case(3):
-				sword.gameObject.SetActive(false);
-				staff.gameObject.SetActive(false);
-				axe.gameObject.SetActive(true);
+				//sword.gameObject.SetActive(false);
+				//staff.gameObject.SetActive(false);
+				//axe.gameObject.SetActive(true);
 				break;
         }
 

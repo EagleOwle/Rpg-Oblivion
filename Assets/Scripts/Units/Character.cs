@@ -13,12 +13,15 @@ public class Character : MonoBehaviour, IGroundCheck
     [SerializeField] private Rotation rotation;
     [SerializeField] private Jumping jumping;
     [SerializeField] private Crouching crouching;
+    [SerializeField] private ItemStorage itemStorage;
+    [SerializeField] private HudItem hudItem;
 
     private void Start()
     {
         motion.Initialise(this as IGroundCheck);
         jumping.Initialise(this as IGroundCheck);
         rotation.Initialise();
+        itemStorage.Initialise(hudItem as IItemListener);
 
         CrouchListener[] crouchListeners = GetComponentsInChildren<CrouchListener>();
         crouching.Initialise(this as IGroundCheck, crouchListeners);

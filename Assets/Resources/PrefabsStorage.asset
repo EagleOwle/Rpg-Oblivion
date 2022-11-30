@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be69f2913f7fb24bb30a25fbe2f88bf, type: 3}
+  m_Name: PrefabsStorage
+  m_EditorClassIdentifier: 
+  sword: {fileID: 4218545138696667393, guid: d7700775e73089d4f8c6609dd9ad7024, type: 3}
+  staff: {fileID: 5647288349733609275, guid: f9114c06cdb528741880cfea35fcaffe, type: 3}
+  mase: {fileID: 9040355797413620846, guid: a4985201b7ad0eb47b495dd16ad418dc, type: 3}
