@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class Sword : Weapon, IItem
 {
-    public string GetName()
-    {
-        return name;
-    }
+    
 }

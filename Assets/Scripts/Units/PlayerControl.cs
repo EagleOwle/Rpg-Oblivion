@@ -66,5 +66,5 @@ public class PlayerControl : MonoBehaviour
 
         jump = false;
     }
-
+    
 }

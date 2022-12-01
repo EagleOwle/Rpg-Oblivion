@@ -13,15 +13,21 @@ public class Character : MonoBehaviour, IGroundCheck
     [SerializeField] private Rotation rotation;
     [SerializeField] private Jumping jumping;
     [SerializeField] private Crouching crouching;
+    [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private ItemStorage itemStorage;
-    [SerializeField] private HudItem hudItem;
+    [SerializeField] private Hud hud;
 
     private void Start()
     {
         motion.Initialise(this as IGroundCheck);
         jumping.Initialise(this as IGroundCheck);
         rotation.Initialise();
-        itemStorage.Initialise(hudItem as IItemListener);
+
+        hud.Initialise();
+
+        itemStorage.Initialise(hud.HudItems as IItemListener);
+
+        weaponHolder.Initialise(ref itemStorage.InitSetActive);
 
         CrouchListener[] crouchListeners = GetComponentsInChildren<CrouchListener>();
         crouching.Initialise(this as IGroundCheck, crouchListeners);
@@ -92,6 +98,7 @@ public class Character : MonoBehaviour, IGroundCheck
 			return false;
 		}
 	}
+
 
     [System.Serializable]
     public class EventBool : UnityEvent<bool> { };

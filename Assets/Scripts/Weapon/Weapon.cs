@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IItem
 {
     [SerializeField] protected bool onlyHideCursor = true;
     [SerializeField] protected Animator animator;
@@ -22,6 +22,16 @@ public class Weapon : MonoBehaviour
     public virtual void Attack()
     {
         animator.SetTrigger(attack);
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 }
 

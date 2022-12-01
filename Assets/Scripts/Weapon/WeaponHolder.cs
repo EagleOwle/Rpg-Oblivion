@@ -5,86 +5,40 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
-	[SerializeField] private bool onlyHideCursor = true;
-
 	[SerializeField] private Animator animator;
 	[SerializeField] private SmoothFollow smoothFollow;
 
-	//[SerializeField] private Weapon sword;
-	//[SerializeField] private Weapon staff;
-	//[SerializeField] private Weapon axe;
+    private int configItemIndex;
+    private IItem currentItem;
 
-
-	private int currentWeaponIndex;
-
-    private void Start()
+    public void Initialise(ref Action<int> SetItem)
     {
-		//sword.gameObject.SetActive(false);
-		//staff.gameObject.SetActive(false);
-		//axe.gameObject.SetActive(false);
-	}
+        SetItem += OnChangeWeapon;
+    }
 
-    public void OnChangeWeapon(int weaponIndex)
+    public void OnChangeWeapon(int configItemIndex)
     {
-		currentWeaponIndex = weaponIndex;
-		smoothFollow.enabled = false;
+        this.configItemIndex = configItemIndex;
+        smoothFollow.enabled = false;
 		animator.SetTrigger("Hide");
     }
 
-
-    private void Update()
+    private void EndHide()//Animator event
     {
-		if (onlyHideCursor && Cursor.visible == true) return;
-
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (currentItem != null)
         {
-			OnChangeWeapon(1);
-
-		}
-
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			OnChangeWeapon(2);
-
-		}
-
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			OnChangeWeapon(3);
-
-		}
-	}
-
-
-    private void EndHide()
-    {
-		ChangeWeapon();
-	}
-
-	private void ChangeWeapon()
-    {
-		switch (currentWeaponIndex)
-        {
-			case(1):
-				//sword.gameObject.SetActive(true);
-				//staff.gameObject.SetActive(false);
-				//axe.gameObject.SetActive(false);
-				break;
-			case(2):
-				//sword.gameObject.SetActive(false);
-				//staff.gameObject.SetActive(true);
-				//axe.gameObject.SetActive(false);
-				break;
-			case(3):
-				//sword.gameObject.SetActive(false);
-				//staff.gameObject.SetActive(false);
-				//axe.gameObject.SetActive(true);
-				break;
+            Destroy(currentItem.GetGameObject());
         }
 
-		smoothFollow.enabled = true;
-	}
+        InstantiateItem(configItemIndex);
+        smoothFollow.enabled = true;
+    }
 
-	
+	private void InstantiateItem(int configItemIndex)
+    {
+        if (configItemIndex < 0) return;
+        Weapon prefab = ConfigStorage.Instance.configItem.configsWeapon[configItemIndex].weaponPrefab;
+        currentItem = Instantiate(prefab, transform) as IItem;
+    }
 
 }

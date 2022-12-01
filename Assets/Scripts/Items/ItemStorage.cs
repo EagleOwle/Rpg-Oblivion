@@ -5,7 +5,7 @@ using UnityEngine;
 
 public partial class ItemStorage : MonoBehaviour
 {
-    public event Action InitItemStorage;
+    public Action<int> InitSetActive;
 
     [SerializeField] private int storageCount = 5;
     [SerializeField] private List<StorageSlot> slots;
@@ -15,35 +15,85 @@ public partial class ItemStorage : MonoBehaviour
     public void Initialise(IItemListener itemListener)
     {
         this.itemListener = itemListener;
-        AddItem(PrefabsStorage.Instance.sword as IItem);
+
+        //int indexConfig = UnityEngine.Random.Range(0, ConfigStorage.Instance.configItem.configsWeapon.Count);
+
+        int emptySlotIndex;
+
+        AddItemToEmptySlot(0, out emptySlotIndex);
+
+        AddItemToEmptySlot(1, out emptySlotIndex);
+
+        AddItemToEmptySlot(2, out emptySlotIndex);
     }
 
-    public bool AddItem(IItem value)
+    private bool AddItemToEmptySlot(int configItemIndex, out int emptySlotIndex)
     {
-        if (GetEmptySlot(out StorageSlot emptySlot))
-        {
-            emptySlot.AddItem(value);
-            itemListener.OnChangeItem(emptySlot.index, value);
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool GetEmptySlot(out StorageSlot emptySlot)
-    {
-        emptySlot = null;
-
+        emptySlotIndex = -1;
         for (int i = 0; i < slots.Count; i++)
         {
             if(slots[i].Item == null)
             {
-                emptySlot = slots[i];
+                emptySlotIndex = i;
+                slots[i].AddItem(configItemIndex);
+                itemListener.OnChangeItem(configItemIndex, emptySlotIndex);
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void SetActiveSlot(int index)
+    {
+        if (slots.Count <= index) return;
+        if (slots[index].Item == null) return;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].IsActive)
+            {
+                if(i == index)
+                {
+                    InitSetActive.Invoke(-1);
+                }
+
+                slots[i].IsActive = false;
+            }
+            else
+            {
+                slots[index].IsActive = true;
+                InitSetActive.Invoke(slots[index].ConfigItemIndex);
+            }
+        } 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SetActiveSlot(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SetActiveSlot(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetActiveSlot(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SetActiveSlot(3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            SetActiveSlot(4);
+        }
     }
 
 }

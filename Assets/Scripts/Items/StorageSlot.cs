@@ -1,14 +1,34 @@
-﻿[System.Serializable]
+﻿using UnityEngine;
+
+[System.Serializable]
 public partial class StorageSlot
 {
-    public string name;
+    [SerializeField] private string name;
+
     private IItem item;
     public IItem Item => item;
-    public readonly int index;
 
-    public void AddItem(IItem value)
+    private int configItemIndex;
+    public int ConfigItemIndex => configItemIndex;
+
+    private bool isActive;
+    public bool IsActive
     {
-        item = value;
+        get
+        {
+            return isActive;
+        }
+
+        set
+        {
+            isActive = value;
+        }
+    }
+
+    public void AddItem(int configItemIndex)
+    {
+        this.configItemIndex = configItemIndex;
+        item = ConfigStorage.Instance.configItem.configsWeapon[configItemIndex].weaponPrefab as IItem;
         name = item.GetName();
     }
 

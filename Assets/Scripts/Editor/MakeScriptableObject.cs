@@ -16,12 +16,12 @@ public class MakeScriptableObject : MonoBehaviour
         Selection.activeObject = asset;
     }
 
-    [MenuItem("Assets/Create/PrefabsStorage")]
-    public static void CreatePrefabsStorage()
+    [MenuItem("Assets/Create/ConfigStorage")]
+    public static void CreateConfigStorage()
     {
-        PrefabsStorage asset = ScriptableObject.CreateInstance<PrefabsStorage>();
+        ConfigStorage asset = ScriptableObject.CreateInstance<ConfigStorage>();
 
-        AssetDatabase.CreateAsset(asset, "Assets/Resources/PrefabsStorage.asset");
+        AssetDatabase.CreateAsset(asset, "Assets/Resources/ConfigStorage.asset");
         AssetDatabase.SaveAssets();
 
         EditorUtility.FocusProjectWindow();

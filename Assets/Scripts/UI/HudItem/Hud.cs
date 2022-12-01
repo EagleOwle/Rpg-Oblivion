@@ -4,11 +4,12 @@ using UnityEngine;
 
 public partial class Hud : MonoBehaviour
 {
-    [SerializeField] private HudItem hudItem;
+    [SerializeField] private HudItems hudItem;
+    public HudItems HudItems => hudItem;
 
     public void Initialise()
     {
-
+        hudItem.Initialise();
     }
 
 }
