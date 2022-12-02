@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -401,7 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfxManager: {fileID: 4279592360591251795}
   characterController: {fileID: 4279592360591251792}
-  speedMove: 200
+  speedMove: 8
 --- !u!114 &120908936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,13 +417,13 @@ MonoBehaviour:
   rotateAxisX:
     axis: 0
     target: {fileID: 4279592360630792182}
-    speed: 120
+    speed: 180
     minimum: -65
     maximum: 65
   rotateAxisY:
     axis: 1
     target: {fileID: 3301291379684888928}
-    speed: 120
+    speed: 180
     minimum: -360
     maximum: 360
 --- !u!114 &120908938
@@ -3502,6 +3502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -6700,7 +6701,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4279592360591251779}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2226e56354e2ac4ead27ceb0ebf281f, type: 3}
   m_Name: 

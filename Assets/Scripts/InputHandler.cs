@@ -62,38 +62,38 @@ public class InputHandler : MonoBehaviour, IMouseInput
         }
     }
 
-    private void Update()
-    {
-        MouseAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * GamePreference.Instance.applicationSetting.mouseSence * Time.deltaTime;
-        Scroll = Input.GetAxis("Mouse ScrollWheel");
-        KeyboardAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+    //private void Update()
+    //{
+    //    MouseAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * GamePreference.Instance.applicationSetting.mouseSence * Time.deltaTime;
+    //    Scroll = Input.GetAxis("Mouse ScrollWheel");
+    //    KeyboardAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            EventOnJump.Invoke();
-        }
+    //    if (Input.GetButtonDown("Jump"))
+    //    {
+    //        EventOnJump.Invoke();
+    //    }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            EventOnAcceleration.Invoke(true);
-        }
+    //    if (Input.GetKeyDown(KeyCode.LeftShift))
+    //    {
+    //        EventOnAcceleration.Invoke(true);
+    //    }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            EventOnAcceleration.Invoke(false);
-        }
+    //    if (Input.GetKeyUp(KeyCode.LeftShift))
+    //    {
+    //        EventOnAcceleration.Invoke(false);
+    //    }
 
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            EventOnCrouch.Invoke(true);
-        }
+    //    if (Input.GetKeyDown(KeyCode.C))
+    //    {
+    //        EventOnCrouch.Invoke(true);
+    //    }
 
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            EventOnCrouch.Invoke(false);
-        }
-    }
+    //    if (Input.GetKeyUp(KeyCode.C))
+    //    {
+    //        EventOnCrouch.Invoke(false);
+    //    }
+    //}
 
 
 }

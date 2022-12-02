@@ -9,8 +9,6 @@ public class Motion : MonoBehaviour
     [SerializeField] private float speedMove = 200;
 
     private bool acceleration;
-    private WaitForFixedUpdate WaitForFixedUpdate;
-    private WaitForEndOfFrame WaitForLateUpdate;
     private IGroundCheck groundCheck;
 
     private Vector3 moveDirection;
@@ -19,8 +17,6 @@ public class Motion : MonoBehaviour
     public void Initialise(IGroundCheck groundCheck)
     {
         this.groundCheck = groundCheck;
-        WaitForFixedUpdate = new WaitForFixedUpdate();
-        WaitForLateUpdate = new WaitForEndOfFrame();
     }
 
     public void OnAcceleration(bool acceleration)
@@ -30,7 +26,8 @@ public class Motion : MonoBehaviour
 
     public void Move(Vector3 moveDirection)
     {
-        this.moveDirection = moveDirection;// transform.position + moveDirection;
+        this.moveDirection = moveDirection;
+
         if (isMove == false)
         {
             StartCoroutine(Moving());
@@ -39,23 +36,32 @@ public class Motion : MonoBehaviour
 
     private IEnumerator Moving()
     {
-        sfxManager.PlayStep();
         isMove = true;
-        while (Vector3.Distance(transform.position, moveDirection) > 0.5f)
-        {
-            if (groundCheck.CheckGroundStatus())
-            {
-                Vector3 direction = moveDirection;
-                if (acceleration) direction *= 2;
 
-                characterController.SimpleMove(transform.TransformDirection(direction * speedMove * Time.deltaTime));
+        while (true)
+        {
+            if (groundCheck.OnGround() == false)
+            {
+                break;
             }
 
-            yield return WaitForLateUpdate;
+            if (moveDirection.magnitude == 0)
+            {
+                break;
+            }
+
+            Vector3 direction = moveDirection;
+            if (acceleration) direction *= 2;
+
+            characterController.Move(transform.TransformDirection(direction * speedMove * Time.deltaTime));
+
+            sfxManager.PlayStep();
+
+            yield return null;
         }
 
         sfxManager.StopPlayStep();
         isMove = false;
-    }  
+    } 
 
 }

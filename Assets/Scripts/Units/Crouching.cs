@@ -33,7 +33,7 @@ public class Crouching : MonoBehaviour
     {
         if (crouch == true)
         {
-            if (groundCheck.CheckGroundStatus() == false) return;
+            if (groundCheck.OnGround() == false) return;
 
             StopAllCoroutines();
             characterController.height = characterController.height / 2f;

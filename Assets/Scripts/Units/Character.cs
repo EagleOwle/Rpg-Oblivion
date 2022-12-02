@@ -62,7 +62,7 @@ public class Character : MonoBehaviour, IGroundCheck
         rotation.StartRotation(value);
     }
 
-    bool IGroundCheck.CheckGroundStatus()
+    bool IGroundCheck.OnGround()
     {
         return CapsuleObstacleFromBelow();
     }

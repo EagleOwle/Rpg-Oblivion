@@ -22,7 +22,7 @@ public class Jumping : MonoBehaviour
 
     public void Jump()
     {
-        if (groundCheck.CheckGroundStatus() == true && ObstacleFromAbove() == false)
+        if (groundCheck.OnGround() == true && ObstacleFromAbove() == false)
         {
             StartCoroutine(JumpRoutine());
         }
@@ -34,7 +34,7 @@ public class Jumping : MonoBehaviour
         while (currentTime < jumpCurve.length)
         {
             currentTime += jumpTime * Time.deltaTime;
-            characterController.Move(new Vector3(0, jumpCurve.Evaluate(currentTime) * jumpPower, 0));
+            characterController.Move(Vector3.up * jumpCurve.Evaluate(currentTime) * jumpPower);
             yield return null;
         }
     }
