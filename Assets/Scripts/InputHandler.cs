@@ -62,13 +62,9 @@ public class InputHandler : MonoBehaviour, IMouseInput
         }
     }
 
-    private void Initialise()
-    {
-    }
-
     private void Update()
     {
-        MouseAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        MouseAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * GamePreference.Instance.applicationSetting.mouseSence * Time.deltaTime;
         Scroll = Input.GetAxis("Mouse ScrollWheel");
         KeyboardAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 

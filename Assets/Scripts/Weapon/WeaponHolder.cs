@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
-	[SerializeField] private Animator animator;
+    [SerializeField] private bool onlyHideCursor;
+
+    [SerializeField] private Animator animator;
 	[SerializeField] private SmoothFollow smoothFollow;
 
     private int configItemIndex;
-    private IItem currentItem;
+    private Weapon current;
 
     public void Initialise(ref Action<int> SetItem)
     {
@@ -21,13 +23,15 @@ public class WeaponHolder : MonoBehaviour
         this.configItemIndex = configItemIndex;
         smoothFollow.enabled = false;
 		animator.SetTrigger("Hide");
+        StopAllCoroutines();
     }
 
     private void EndHide()//Animator event
     {
-        if (currentItem != null)
+        if (current != null)
         {
-            Destroy(currentItem.GetGameObject());
+            current.SelfDestroy();
+            current = null;
         }
 
         InstantiateItem(configItemIndex);
@@ -38,7 +42,24 @@ public class WeaponHolder : MonoBehaviour
     {
         if (configItemIndex < 0) return;
         Weapon prefab = ConfigStorage.Instance.configItem.configsWeapon[configItemIndex].weaponPrefab;
-        currentItem = Instantiate(prefab, transform) as IItem;
+        current = Instantiate(prefab, transform);
+        StartCoroutine(WaitInput());
     }
+
+    private IEnumerator WaitInput()
+    {
+        while(true)
+        {
+            if (onlyHideCursor && Cursor.visible == true) break;
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                current.Attack();
+            }
+
+            yield return null;
+        }
+    }
+
 
 }

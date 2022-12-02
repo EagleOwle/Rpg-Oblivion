@@ -34,12 +34,19 @@ public class HudSlotItem : MonoBehaviour
 
     public void ChangeItem(int configIndex)
     {
-        this.configIndex = configIndex;
-        Sprite sprite = ConfigStorage.Instance.configItem.configsWeapon[configIndex].sprite;
-        image.sprite = sprite;
+        if (configIndex < 0)
+        {
+            Clear();
+        }
+        else
+        {
+            this.configIndex = configIndex;
+            Sprite sprite = ConfigStorage.Instance.configItem.configsWeapon[configIndex].sprite;
+            image.sprite = sprite;
+        }
     }
 
-    public void Clear()
+    private void Clear()
     {
         configIndex = -1;
         image.sprite = empty;

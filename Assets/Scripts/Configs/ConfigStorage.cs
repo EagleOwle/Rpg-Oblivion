@@ -27,6 +27,7 @@ public class ConfigStorage : ScriptableObject
     #endregion
 
     public ConfigItemStorage configItem;
+    public Prefabs prefabs;
 
     private void OnValidate()
     {

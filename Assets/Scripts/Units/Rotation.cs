@@ -3,39 +3,18 @@ using UnityEngine;
 
 public class Rotation : MonoBehaviour
 {
-	 [SerializeField] private float speedRotation = 150;
-
-    private WaitForEndOfFrame WaitForEndOfFrame;
-    private Vector3 rotateDirection;
+    [SerializeField] RotateAxis rotateAxisX, rotateAxisY;
 
     public void Initialise()
     {
-        WaitForEndOfFrame = new WaitForEndOfFrame();
+        rotateAxisX.Initialise(this);
+        rotateAxisY.Initialise(this);
     }
 
     public void StartRotation(Vector3 value)
-	{
-		StopAllCoroutines();
-        rotateDirection = transform.eulerAngles + (new Vector3(value.y, value.x, value.z) * speedRotation);
-        StartCoroutine(OnRotation());
-	}
-
-    private IEnumerator OnRotation()
     {
-        while (Round(transform.eulerAngles.y) != Round(rotateDirection.y))
-        {
-            transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, rotateDirection, speedRotation * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-
-            yield return WaitForEndOfFrame;
-        }
-    }
-
-    private float Round(float value)
-    {
-        value = (float)System.Math.Round(value, 2);
-
-        return value;
+        rotateAxisX.Rotation(-value.y);
+        rotateAxisY.Rotation(value.x);
     }
 
 }

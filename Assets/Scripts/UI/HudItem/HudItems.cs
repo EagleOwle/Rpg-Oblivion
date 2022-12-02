@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface IItemListener
-{
-    void OnChangeItem(int configIndex, int slotIndex);
-}
-
-public partial class HudItems : MonoBehaviour, IItemListener
+public partial class HudItems : MonoBehaviour, ISlotStorageListener
 {
     [SerializeField] private HudSlotItem[] slotImage;
 
@@ -21,7 +16,7 @@ public partial class HudItems : MonoBehaviour, IItemListener
         }
     }
 
-    public void OnChangeItem(int configIndex, int slotIndex)
+    public void OnChangeSlotItem(int configIndex, int slotIndex)
     {
         slotImage[slotIndex].ChangeItem(configIndex);
     }

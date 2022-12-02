@@ -32,5 +32,13 @@ public partial class StorageSlot
         name = item.GetName();
     }
 
+    public void RemoveItem()
+    {
+        configItemIndex = -1;
+        isActive = false;
+        item = null;
+        name = "None";
+    }
+
 }
 

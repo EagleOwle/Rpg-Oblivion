@@ -3,28 +3,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class ItemStorage : MonoBehaviour
+public partial class ItemStorage : MonoBehaviour, IItemActionListener
 {
-    public Action<int> InitSetActive;
+    public Action<int> actionSetActiveSlot;
 
     [SerializeField] private int storageCount = 5;
     [SerializeField] private List<StorageSlot> slots;
 
-    private IItemListener itemListener;
+    private ISlotStorageListener slotListener;
 
-    public void Initialise(IItemListener itemListener)
+    public void Initialise(ISlotStorageListener slotListener)
     {
-        this.itemListener = itemListener;
+        this.slotListener = slotListener;
 
-        //int indexConfig = UnityEngine.Random.Range(0, ConfigStorage.Instance.configItem.configsWeapon.Count);
+        foreach (var item in slots)
+        {
+            item.RemoveItem();
+        }
 
-        int emptySlotIndex;
 
-        AddItemToEmptySlot(0, out emptySlotIndex);
+        //int emptySlotIndex;
 
-        AddItemToEmptySlot(1, out emptySlotIndex);
+        //AddItemToEmptySlot(0, out emptySlotIndex);
 
-        AddItemToEmptySlot(2, out emptySlotIndex);
+        //AddItemToEmptySlot(1, out emptySlotIndex);
+
+        //AddItemToEmptySlot(2, out emptySlotIndex);
+
+        //AddItemToEmptySlot(0, out emptySlotIndex);
+
+        //AddItemToEmptySlot(1, out emptySlotIndex);
+
+        //AddItemToEmptySlot(2, out emptySlotIndex);
+
+    }
+
+    public bool Pickup(int configIndex)
+    {
+        return AddItemToEmptySlot(configIndex, out int emptySlotIndex);
+    }
+
+    public void DropActiveItem()
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].IsActive)
+            {
+                ItemScene prefab = ConfigStorage.Instance.configItem.configsWeapon[slots[i].ConfigItemIndex].itemScenePrefab;
+                Vector3 position = Camera.main.transform.TransformDirection(Vector3.forward);
+                ItemScene item = Instantiate(prefab, transform.position + position + Vector3.up, Quaternion.identity);
+                Rigidbody rigidbody = item.GetComponent<Rigidbody>();
+
+                rigidbody.AddForce(Camera.main.transform.TransformDirection(Vector3.forward + Vector3.up) * 100);
+                rigidbody.AddTorque((Vector3.forward + Vector3.up) * 50);
+
+                slots[i].RemoveItem();
+                slotListener.OnChangeSlotItem(-1, i);
+                actionSetActiveSlot.Invoke(-1);
+
+                return;
+            }
+        }
     }
 
     private bool AddItemToEmptySlot(int configItemIndex, out int emptySlotIndex)
@@ -36,7 +75,7 @@ public partial class ItemStorage : MonoBehaviour
             {
                 emptySlotIndex = i;
                 slots[i].AddItem(configItemIndex);
-                itemListener.OnChangeItem(configItemIndex, emptySlotIndex);
+                slotListener.OnChangeSlotItem(configItemIndex, emptySlotIndex);
                 return true;
             }
         }
@@ -46,7 +85,7 @@ public partial class ItemStorage : MonoBehaviour
 
     private void SetActiveSlot(int index)
     {
-        if (slots.Count <= index) return;
+        if (index >= slots.Count) return;
         if (slots[index].Item == null) return;
 
         for (int i = 0; i < slots.Count; i++)
@@ -55,15 +94,18 @@ public partial class ItemStorage : MonoBehaviour
             {
                 if(i == index)
                 {
-                    InitSetActive.Invoke(-1);
+                    actionSetActiveSlot.Invoke(-1);
                 }
 
                 slots[i].IsActive = false;
             }
             else
             {
-                slots[index].IsActive = true;
-                InitSetActive.Invoke(slots[index].ConfigItemIndex);
+                if (i == index)
+                {
+                    slots[i].IsActive = true;
+                    actionSetActiveSlot.Invoke(slots[i].ConfigItemIndex);
+                }
             }
         } 
     }
@@ -93,6 +135,11 @@ public partial class ItemStorage : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             SetActiveSlot(4);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            DropActiveItem();
         }
     }
 

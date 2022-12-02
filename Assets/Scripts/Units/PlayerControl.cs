@@ -66,5 +66,13 @@ public class PlayerControl : MonoBehaviour
 
         jump = false;
     }
-    
+
+    //private void Update()
+    //{
+    //    if (onlyHideCursor && Cursor.visible == true) return;
+    //    Vector2 MouseAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+    //    character.Rotation(MouseAxis);
+    //}
+
+
 }

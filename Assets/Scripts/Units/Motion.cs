@@ -6,29 +6,43 @@ public class Motion : MonoBehaviour
 {
     [SerializeField] private UnitSfxManager sfxManager;
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float speedMove = 400;
+    [SerializeField] private float speedMove = 200;
 
     private bool acceleration;
     private WaitForFixedUpdate WaitForFixedUpdate;
-    private IGroundCheck groundCheck;   
+    private WaitForEndOfFrame WaitForLateUpdate;
+    private IGroundCheck groundCheck;
+
+    private Vector3 moveDirection;
+    private bool isMove = false;
+
+    public void Initialise(IGroundCheck groundCheck)
+    {
+        this.groundCheck = groundCheck;
+        WaitForFixedUpdate = new WaitForFixedUpdate();
+        WaitForLateUpdate = new WaitForEndOfFrame();
+    }
 
     public void OnAcceleration(bool acceleration)
     {
         this.acceleration = acceleration;
     }
 
-    public void StartMove(Vector3 moveDirection)
+    public void Move(Vector3 moveDirection)
     {
-        StopAllCoroutines();
-        StartCoroutine(Moving(moveDirection));
+        this.moveDirection = moveDirection;// transform.position + moveDirection;
+        if (isMove == false)
+        {
+            StartCoroutine(Moving());
+        }
     }
 
-    private IEnumerator Moving(Vector3 moveDirection)
+    private IEnumerator Moving()
     {
         sfxManager.PlayStep();
-        while (Vector3.Distance(transform.position, transform.position + moveDirection) > 0.5f)
+        isMove = true;
+        while (Vector3.Distance(transform.position, moveDirection) > 0.5f)
         {
-            yield return WaitForFixedUpdate;
             if (groundCheck.CheckGroundStatus())
             {
                 Vector3 direction = moveDirection;
@@ -37,25 +51,11 @@ public class Motion : MonoBehaviour
                 characterController.SimpleMove(transform.TransformDirection(direction * speedMove * Time.deltaTime));
             }
 
-            //yield return new WaitForSeconds(0.5f);
-            //audioSource.PlayOneShot(stepClip);
-
+            yield return WaitForLateUpdate;
         }
 
         sfxManager.StopPlayStep();
-    }
-
-    private float Round(float value)
-    {
-        value = (float)System.Math.Round(value, 2);
-
-        return value;
-    }
-
-    public void Initialise(IGroundCheck groundCheck)
-    {
-        this.groundCheck = groundCheck;
-        WaitForFixedUpdate = new WaitForFixedUpdate();
-    }
+        isMove = false;
+    }  
 
 }

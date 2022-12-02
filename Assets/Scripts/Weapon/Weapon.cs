@@ -9,16 +9,6 @@ public class Weapon : MonoBehaviour, IItem
 
     protected const string attack = "Attack";
 
-    protected virtual void Update()
-    {
-        if (onlyHideCursor && Cursor.visible == true) return;
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Attack();
-        }
-    }
-
     public virtual void Attack()
     {
         animator.SetTrigger(attack);
@@ -29,9 +19,10 @@ public class Weapon : MonoBehaviour, IItem
         return name;
     }
 
-    public GameObject GetGameObject()
+    public void SelfDestroy()
     {
-        return gameObject;
+        Destroy(gameObject);
     }
+
 }
 

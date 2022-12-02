@@ -4,20 +4,34 @@ using UnityEngine;
 
 public class SceneObjectHandler : MonoBehaviour
 {
-    [SerializeField] private ScreenObject screenObjectPrefab;
-    private List<ScreenObject> screenObjects =  new List<ScreenObject>();
+    private List<ScreenObject> screenObjects;
 
-    private void Initialise()
+    public void Initialise()
     {
         screenObjects = new List<ScreenObject>();
     }
 
     public void AddSceneObject(ItemScene itemScene)
     {
-        ScreenObject screenObject = Instantiate(screenObjectPrefab, transform);
-        screenObject.itemScene = itemScene;
+        for (int i = 0; i < screenObjects.Count; i++)
+        {
+            if (screenObjects[i].Item == itemScene)
+            {
+                screenObjects[i].ReInitialise();
+                return;
+            }
+        }
+
+        ScreenObject screenObject = Instantiate(ConfigStorage.Instance.prefabs.screenObjectPrefab, transform);
+        screenObject.eventHide += ScreenObject_eventHide;
         screenObjects.Add(screenObject);
-        screenObject.gameObject.SetActive(true);
+        screenObject.Initialise(itemScene);
+    }
+
+    private void ScreenObject_eventHide(ScreenObject screenObject)
+    {
+        screenObjects.Remove(screenObject);
+        Destroy(screenObject.gameObject);
     }
 
 }

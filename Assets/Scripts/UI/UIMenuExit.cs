@@ -22,6 +22,8 @@ public class UIMenuExit : Menu
         Application.Quit();
 #elif UNITY_IOS
          Application.Quit();
+#elif UNITY_STANDALONE_WIN
+        Application.Quit();
 #endif
     }
 

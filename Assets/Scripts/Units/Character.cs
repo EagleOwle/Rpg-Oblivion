@@ -15,6 +15,7 @@ public class Character : MonoBehaviour, IGroundCheck
     [SerializeField] private Crouching crouching;
     [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private ItemStorage itemStorage;
+    [SerializeField] private LookAtItem lookAtItem;
     [SerializeField] private Hud hud;
 
     private void Start()
@@ -25,12 +26,14 @@ public class Character : MonoBehaviour, IGroundCheck
 
         hud.Initialise();
 
-        itemStorage.Initialise(hud.HudItems as IItemListener);
+        itemStorage.Initialise(hud.HudItems as ISlotStorageListener);
 
-        weaponHolder.Initialise(ref itemStorage.InitSetActive);
+        weaponHolder.Initialise(ref itemStorage.actionSetActiveSlot);
 
         CrouchListener[] crouchListeners = GetComponentsInChildren<CrouchListener>();
         crouching.Initialise(this as IGroundCheck, crouchListeners);
+
+        lookAtItem.Initialise(itemStorage as IItemActionListener);
     }
 
     public void OnJump()
@@ -51,7 +54,7 @@ public class Character : MonoBehaviour, IGroundCheck
     public void Move(Vector3 moveDirection)
     {
         if (moveDirection.magnitude > 1f) moveDirection.Normalize();
-        motion.StartMove(new Vector3(moveDirection.x, 0, moveDirection.y));
+        motion.Move(new Vector3(moveDirection.x, 0, moveDirection.y));
     }
 
     public void Rotation(Vector3 value)

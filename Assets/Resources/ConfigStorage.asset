@@ -18,11 +18,16 @@ MonoBehaviour:
       index: 0
       sprite: {fileID: 21300000, guid: 4ce642d8c20021c498329b9e2102db8e, type: 3}
       weaponPrefab: {fileID: 4218545138696667393, guid: d7700775e73089d4f8c6609dd9ad7024, type: 3}
+      itemScenePrefab: {fileID: 1709942719101022248, guid: 70969e43a7a449a42a693a344ce2999a, type: 3}
     - name: Staff
       index: 1
       sprite: {fileID: 21300000, guid: a5d80d3fe03573c43888fd3a162a261c, type: 3}
       weaponPrefab: {fileID: 5647288349733609275, guid: f9114c06cdb528741880cfea35fcaffe, type: 3}
+      itemScenePrefab: {fileID: 6234345193094071366, guid: e741fb27e6430124daac21ec2529bc94, type: 3}
     - name: Mase
       index: 2
       sprite: {fileID: 21300000, guid: 45abc5fbcad943a4ea1a20825c3ac4b2, type: 3}
       weaponPrefab: {fileID: 9040355797413620846, guid: a4985201b7ad0eb47b495dd16ad418dc, type: 3}
+      itemScenePrefab: {fileID: 2544461493324114106, guid: d4794ae793c153c4db21631038808b2d, type: 3}
+  prefabs:
+    screenObjectPrefab: {fileID: 3903815592576311931, guid: 756ad2c1fabaf0e479c836320605818b, type: 3}

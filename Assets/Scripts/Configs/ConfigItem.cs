@@ -8,5 +8,6 @@ public class ConfigItem
     public int index;
     public Sprite sprite;
     public Weapon weaponPrefab;
+    public ItemScene itemScenePrefab;
 
 }

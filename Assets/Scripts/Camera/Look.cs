@@ -12,7 +12,7 @@ public class Look : MonoBehaviour
     [SerializeField] private float maximumY = 45f;
 
     private Vector2 inputValue;
-    private Vector2 rotation;
+    private Vector2 rotateDirection;
 
     public void Initialise(IMouseInput IMouseInput)
     {
@@ -22,18 +22,31 @@ public class Look : MonoBehaviour
     private void IMouseInput_EventOnMouseAxis(Vector2 value)
     {
         inputValue = value;
+        StartRotation(value);
     }
 
-    private void Update()
+    public void StartRotation(Vector3 value)
     {
-        if (onlyHideCursor && Cursor.visible == true) return;
+        value = new Vector3(value.y, value.x, value.z);
+        rotateDirection = transform.eulerAngles + (value * speedRotation);
+        //if (isRotation == false)
+            //StartCoroutine(OnRotation());
+    }
 
-        //rotation = Vector3.Lerp(rotation, rotation + inputValue, speedRotation * Time.deltaTime);
-        rotation += inputValue * speedRotation * Time.deltaTime;
-        rotation.x = ClampAngle(rotation.x, minimumX, maximumX);
-        rotation.y = ClampAngle(rotation.y, minimumY, maximumY);
-        transform.localRotation = Quaternion.Euler(-rotation.y, rotation.x, 0f);
+    bool isRotation = false;
+    private IEnumerator OnRotation()
+    {
+        isRotation = true;
+        while (Round(transform.eulerAngles.y) != Round(rotateDirection.y))
+        {
+           Vector3 rotation = Vector3.MoveTowards(transform.eulerAngles, rotateDirection, speedRotation * Time.deltaTime);
+            rotation.x = ClampAngle(rotation.x, minimumX, maximumX);
+            rotation.y = ClampAngle(rotation.y, minimumY, maximumY);
+            transform.rotation = Quaternion.Euler(rotation.x, 0, 0);
 
+            yield return new WaitForEndOfFrame();
+        }
+        isRotation = false;
     }
 
     private float ClampAngle(float angle, float min, float max)
@@ -53,6 +66,11 @@ public class Look : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
+    private float Round(float value)
+    {
+        value = (float)System.Math.Round(value, 4);
 
+        return value;
+    }
 
 }
